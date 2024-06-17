@@ -27,29 +27,65 @@
     .timetable td {
         height: 60px;
     }
+    .badge-available {
+        background-color: green;
+        color: white;
+        padding: 3px 7px;
+        border-radius: 5px;
+    }
+    .badge-unavailable {
+        background-color: red;
+        color: white;
+        padding: 3px 7px;
+        border-radius: 5px;
+    }
 </style>
 
 <div class="container">
-    <div class="pagetitle">
     <h1>Timetable for {{ $dayOfWeek }}</h1>
-    </div>
+
+    <!-- Search Form -->
+    <form method="GET" action="{{ route('home-student') }}" class="mb-4">
+        <div class="input-group">
+            <input type="text" name="search" class="form-control" placeholder="Search for venue or time" value="{{ request('search') }}">
+            <div class="input-group-append">
+                <button class="btn btn-primary" type="submit">Search</button>
+            </div>
+        </div>
+    </form>
+
     <table class="table table-bordered timetable">
         <thead>
             <tr>
                 <th>Time</th>
-                <th>Venue</th>
-                <th>Status</th>
+                <th>Venues</th>
             </tr>
         </thead>
         <tbody>
-            @foreach ($timetables as $timetable)
+            @forelse ($groupedTimetables as $time_slot => $venues)
                 <tr>
-                    <td>{{ $timetable->time_slot }}</td>
-                    <td>{{ $timetable->venue_data }}</td>
-                    <td>{{ $timetable->status }}</td>
-                </tr>
-            @endforeach
+                    <td rowspan="{{ $venues->count() }}">{{ $time_slot }}</td>
+                    @foreach ($venues as $index => $venue)
+                        @if ($index > 0)
+                            <tr>
+                        @endif
+                        <td>
+                            {{ $venue->venue_data }} <br>
+                            <span class="badge {{ $venue->status == 'available' ? 'badge-available' : 'badge-unavailable' }}">
+                                {{ ucfirst($venue->status) }}
+                            </span>
+                        </td>
+                        </tr>
+                    @endforeach
+                @empty
+                    <tr>
+                        <td colspan="2">No venues found</td>
+                    </tr>
+                @endforelse
         </tbody>
     </table>
+
+    <!-- Pagination Links -->
+    {{ $timetables->links() }}
 </div>
 @endsection

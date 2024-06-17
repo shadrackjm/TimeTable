@@ -11,15 +11,28 @@ use Illuminate\Support\Facades\Auth;
 
 class StudentController extends Controller
 {
-    public function loadHomePage(){
+    public function loadHomePage(Request $request){
          $dayOfWeek = Carbon::now()->format('l');
-        $timetables = TimeTable::where('day', $dayOfWeek)
-                            //    ->orderBy('time_slot')
-                               ->get();
+        $query = TimeTable::where('day', $dayOfWeek);
+
+        // Search functionality
+        if ($request->has('search')) {
+            $search = $request->get('search');
+            $query->where(function($query) use ($search) {
+                $query->where('venue_data', 'LIKE', "%{$search}%")
+                      ->orWhere('time_slot', 'LIKE', "%{$search}%");
+            });
+        }
+
+        // Fetch paginated data
+        $timetables = $query->orderBy('time_slot')->paginate(10);
+
+        // Group the paginated data
+        $groupedTimetables = $timetables->groupBy('time_slot');
         $logged_user = Auth::user();
         $user_profile_data = UserProfile::where('user_id',$logged_user->id)->first();
         $user_image = $user_profile_data->image;
-        return view('student.home-page',compact('logged_user','user_image','timetables','dayOfWeek'));
+        return view('student.home-page',compact('groupedTimetables','logged_user','user_image','timetables','dayOfWeek'));
     }
 
     public function loadProfile(){

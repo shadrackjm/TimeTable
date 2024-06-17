@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherController;
+use App\Http\Controllers\VenueController;
+
 
 Route::get('/',[AuthController::class,'loadLoginPage']);
 Route::get('/registration/form',[AuthController::class,'loadRegisterForm']);
@@ -31,11 +33,19 @@ Route::get('/404',[AuthController::class,'load404']);
 Route::group(['middleware' => 'admin'], function(){
     Route::get('/admin/home',[AdminController::class,'loadHomePage']);
     Route::get('/admin/profile',[AdminController::class,'loadProfile']);
+
+
+Route::get('/manage/venues', [VenueController::class, 'index'])->name('venues.index');
+Route::get('/venues/create', [VenueController::class, 'create'])->name('venues.create');
+Route::post('/venues', [VenueController::class, 'store'])->name('venues.store');
+Route::get('/venues/{id}/edit', [VenueController::class, 'edit'])->name('venues.edit');
+Route::put('/venues/{id}', [VenueController::class, 'update'])->name('venues.update');
+Route::delete('/venues/{id}', [VenueController::class, 'destroy'])->name('venues.destroy');
 });
 
 // student
 Route::group(['middleware' => 'student'], function(){
-    Route::get('/student/home',[StudentController::class,'loadHomePage']);
+    Route::get('/student/home',[StudentController::class,'loadHomePage'])->name('home-student');
     Route::get('/profile',[StudentController::class,'loadProfile']);
 });
 
