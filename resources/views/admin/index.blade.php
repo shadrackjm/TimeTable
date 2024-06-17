@@ -1,6 +1,35 @@
 @extends('layouts.admin-layout')
 
 @section('space-work')
+<style>
+    .timetable {
+        border-collapse: collapse;
+        width: 100%;
+    }
+    .timetable th, .timetable td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: center;
+    }
+    .timetable th {
+        background-color: #f8f9fa;
+    }
+    .timetable td {
+        height: 60px;
+    }
+    .badge-available {
+        background-color: green;
+        color: white;
+        padding: 3px 7px;
+        border-radius: 5px;
+    }
+    .badge-unavailable {
+        background-color: red;
+        color: white;
+        padding: 3px 7px;
+        border-radius: 5px;
+    }
+</style>
     <div class="pagetitle">
         <h1>Venues</h1>
         <nav>
@@ -36,9 +65,9 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Venue</th>
-                                <th>Status</th>
-                                <th>Day of a week</th>
+                                <th>Day of the week</th>
                                 <th>Time Slot</th>
+                                <th>Status</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -49,7 +78,11 @@
                                     <td>{{ $venue->venue_data }}</td>
                                     <td>{{ $venue->day }}</td>
                                     <td>{{ $venue->time_slot }}</td>
-                                    <td>{{ ucfirst($venue->status) }}</td>
+                                    @if ($venue->status == 'available')
+                                        <td><span class="badge-available">{{ ucfirst($venue->status)}}</span></td>
+                                    @else
+                                        <td><span class="badge-unavailable">{{ ucfirst($venue->status)}}</span></td>
+                                    @endif
                                     <td>
                                         <a href="{{ route('venues.edit', $venue->id) }}" class="btn btn-primary btn-sm">Edit</a>
                                         <form action="{{ route('venues.destroy', $venue->id) }}" method="POST" class="d-inline">
