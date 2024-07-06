@@ -30,7 +30,7 @@
   <!-- Template Main CSS File -->
   <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
 @vite('resources/css/app.css')
-  
+
 
   <!-- =======================================================
   * Template Name: NiceAdmin
@@ -70,12 +70,17 @@
           </a>
         </li><!-- End Search Icon-->
 
-       
+
 
         <li class="nav-item dropdown pe-3">
 
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-            <img class="rounded-circle" width="30px" height="30px" src="{{ asset('storage/images/'.$user_image) }}" alt="profile image">
+            @if (auth()->user()->image == null)
+                <img src="https://ui-avatars.com/api/?name={{auth()->user()->name}}&rounded=true" alt="">
+            @else
+                <img src="{{ Storage::url(auth()->user()->image) }}" alt="Profile" class="rounded-circle">
+
+            @endif
             <span class="d-none d-md-block dropdown-toggle ps-2">{{$logged_user->name}}</span>
           </a><!-- End Profile Iamge Icon -->
 
@@ -139,7 +144,7 @@
     <ul class="sidebar-nav" id="sidebar-nav">
 
       <li class="nav-item">
-        <a class="nav-link " href="/user/home" wire:navigate>
+        <a class="nav-link " href="/lecturer/home" wire:navigate>
           <i class="bi bi-grid"></i>
           <span>Home page</span>
         </a>
@@ -147,7 +152,7 @@
 
       <li class="nav-heading">Pages</li>
        <li class="nav-item">
-        <a class="nav-link collapsed" href="/profile" wire:navigate>
+        <a class="nav-link collapsed" href="/lecturer/profile" wire:navigate>
           <i class="bi bi-person"></i>
           <span>Profile</span>
         </a>
@@ -163,7 +168,7 @@
         @yield('space-work')
   </main><!-- End #main -->
 
- 
+
 
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 

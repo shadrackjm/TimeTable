@@ -42,8 +42,8 @@ Route::get('/venues/{id}/edit', [VenueController::class, 'edit'])->name('venues.
 Route::put('/venues/{id}', [VenueController::class, 'update'])->name('venues.update');
 Route::delete('/venues/{id}', [VenueController::class, 'destroy'])->name('venues.destroy');
 
-Route::post('/profile/update', [AdminController::class, 'updateProfile'])->name('admin.update-profile');
-Route::post('/password/update', [AdminController::class, 'updatePassword'])->name('admin.update-password');
+Route::post('/admin/profile/update', [AdminController::class, 'updateProfile'])->name('admin.update-profile');
+Route::post('/admin/password/update', [AdminController::class, 'updatePassword'])->name('admin.update-password');
 
 });
 
@@ -60,6 +60,10 @@ Route::group(['middleware' => 'student'], function(){
 Route::group(['middleware' => 'lecturer'], function(){
     Route::get('/lecturer/home',[TeacherController::class,'loadHomePage']);
     Route::get('/lecturer/profile',[TeacherController::class,'loadProfile']);
+
+    Route::post('/profile/update', [TeacherController::class, 'updateProfile'])->name('lecturer.update-profile');
+    Route::post('/password/update', [TeacherController::class, 'updatePassword'])->name('lecturer.update-password');
+
 });
 
 
