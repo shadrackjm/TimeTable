@@ -6,7 +6,7 @@
     <nav>
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="/student/home">Dashboard</a></li>
-            <li class="breadcrumb-item active">Available venues</li>
+            <li class="breadcrumb-item active">Available venues </li>
         </ol>
     </nav>
 </div><!-- End Page Title -->
@@ -42,7 +42,9 @@
 </style>
 
 <div class="container">
-    <h1>Timetable for {{ $dayOfWeek }}</h1>
+    <div class="card">
+        <div class="card-header">Timetable for {{ $dayOfWeek }}</div>
+        <div class="card-body">
 
     <!-- Search Form -->
     <form method="GET" action="{{ route('home-student') }}" class="mb-4">
@@ -87,5 +89,9 @@
 
     <!-- Pagination Links -->
     {{ $timetables->links() }}
+        </div>
+    </div>
+
+
 </div>
 @endsection

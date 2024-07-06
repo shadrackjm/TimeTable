@@ -41,12 +41,19 @@ Route::post('/venues', [VenueController::class, 'store'])->name('venues.store');
 Route::get('/venues/{id}/edit', [VenueController::class, 'edit'])->name('venues.edit');
 Route::put('/venues/{id}', [VenueController::class, 'update'])->name('venues.update');
 Route::delete('/venues/{id}', [VenueController::class, 'destroy'])->name('venues.destroy');
+
+Route::post('/profile/update', [AdminController::class, 'updateProfile'])->name('admin.update-profile');
+Route::post('/password/update', [AdminController::class, 'updatePassword'])->name('admin.update-password');
+
 });
 
 // student
 Route::group(['middleware' => 'student'], function(){
     Route::get('/student/home',[StudentController::class,'loadHomePage'])->name('home-student');
     Route::get('/profile',[StudentController::class,'loadProfile']);
+    Route::post('/profile/update', [StudentController::class, 'updateProfile'])->name('student.update-profile');
+    Route::post('/password/update', [StudentController::class, 'updatePassword'])->name('student.update-password');
+
 });
 
 // lecturer

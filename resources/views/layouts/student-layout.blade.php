@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Dashboard - NiceAdmin Bootstrap Template</title>
+  <title>{{ $page_title ?? 'Page Title'}}</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -34,13 +34,6 @@
         and change all links as for style.css
     --}}
 
-  <!-- =======================================================
-  * Template Name: NiceAdmin
-  * Updated: Sep 18 2023 with Bootstrap v5.3.2
-  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
 </head>
 
 <body>
@@ -76,7 +69,12 @@
         <li class="nav-item dropdown pe-3">
 
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-            <img class="rounded-circle" width="30px" height="30px" src="{{ asset('storage/images/'.$user_image) }}" alt="profile image">
+            @if (auth()->user()->image == null)
+                <img src="https://ui-avatars.com/api/?name={{auth()->user()->name}}&rounded=true" alt="">
+            @else
+                <img src="{{ Storage::url(auth()->user()->image) }}" alt="Profile" class="rounded-circle">
+
+            @endif
             <span class="d-none d-md-block dropdown-toggle ps-2">{{$logged_user->name}}</span>
           </a><!-- End Profile Iamge Icon -->
 
@@ -89,9 +87,9 @@
               <hr class="dropdown-divider">
             </li>
 
-            
 
-           
+
+
             <li>
               <hr class="dropdown-divider">
             </li>
@@ -141,7 +139,7 @@
         @yield('space-work')
   </main><!-- End #main -->
 
-  
+
 
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 

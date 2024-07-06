@@ -11,14 +11,20 @@
     </nav>
 </div><!-- End Page Title -->
     <div class="container">
-        <h1>Add Venue</h1>
-        <form method="POST" action="{{ route('venues.store') }}">
-            @csrf
-            <div class="form-group">
-                <label for="venue_data">Venue Name</label>
-                <input type="text" class="form-control" id="venue_data" name="venue_data" required>
+        <div class="card">
+            <div class="card-header">add venue</div>
+            <div class="card-body">
+                <form method="POST" action="{{ route('venues.store') }}">
+                    @csrf
+                    <div class="form-group">
+                        <label for="venue_data">Venue Name</label>
+                        <input type="text" class="form-control" id="venue_data" name="venue_data" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Venue</button>
+                </form>
             </div>
-            <button type="submit" class="btn btn-primary">Add Venue</button>
-        </form>
+
+        </div>
+
     </div>
 @endsection

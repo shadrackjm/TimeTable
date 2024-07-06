@@ -8,6 +8,8 @@ use App\Models\TimeTable;
 use App\Models\UserProfile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class StudentController extends Controller
 {
@@ -43,5 +45,54 @@ class StudentController extends Controller
         ->where('user_profiles.user_id',auth()->user()->id)
         ->first();
         return view('student.user-profile',compact('logged_user','user_image','user_data'));
+    }
+
+    public function UpdateProfile(Request $request){
+
+        try {
+                if ($request->file('image')) {
+                    $path = $request->file('image')->store('/public/images');
+                    $user = User::find(auth()->user()->id);
+                    $old_image = $user->image;
+                    if (!empty($old_image)) {
+                        Storage::delete($old_image);
+                    }
+                    $user->update([
+                        'name' => $request->name,
+                        'email' => $request->email,
+                        'image' => $path,
+                    ]);
+                    $path = $request->file('image')->store('/public/images');
+                    $url = Storage::url($path);
+                    return back()->with('success', 'Profile updated successfully')->with('path', $url);
+                }else{
+                    $user = User::find(auth()->user()->id);
+                    $user->update([
+                        'name' => $request->name,
+                        'email' => $request->email,
+                    ]);
+                    return back()->with('success', 'Profile updated successfully');
+
+                }
+        } catch (\Exception $th) {
+                    return back()->with('fail', $th->getMessage());
+        }
+
+    }
+    public function UpdatePassword(Request $request){
+        $request->validate([
+            'password' => 'required|confirmed',
+        ]);
+        try {
+
+                    $user = User::find(auth()->user()->id);
+                    $user->update([
+                        'password' => Hash::make($request->password),
+                    ]);
+                    return back()->with('success', 'Password updated successfully');
+        } catch (\Exception $th) {
+                    return back()->with('fail', $th->getMessage());
+        }
+
     }
 }

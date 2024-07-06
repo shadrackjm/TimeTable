@@ -20,7 +20,6 @@ return new class extends Migration
             $table->string('academic_year')->nullable();
             $table->string('address')->nullable();
             $table->integer('phone')->nullable();
-            $table->string('image')->nullable();
             $table->timestamps();
         });
     }
