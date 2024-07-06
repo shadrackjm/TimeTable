@@ -5,7 +5,7 @@
     <h1>Home</h1>
     <nav>
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="/student/home">Dashboard</a></li>
+            <li class="breadcrumb-item"><a href="/lecturer/home">Dashboard</a></li>
             <li class="breadcrumb-item active">Available venues </li>
         </ol>
     </nav>
@@ -47,7 +47,7 @@
         <div class="card-body">
 
     <!-- Search Form -->
-    <form method="GET" action="{{ route('home-student') }}" class="mb-4">
+    <form method="GET" action="{{ route('lecturer-home') }}" class="mb-4">
         <div class="input-group">
             <input type="text" name="search" class="form-control" placeholder="Search for venue or time" value="{{ request('search') }}">
             <div class="input-group-append">
@@ -61,6 +61,7 @@
             <tr>
                 <th>Time</th>
                 <th>Venues</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
@@ -77,6 +78,7 @@
                                 {{ ucfirst($venue->status) }}
                             </span>
                         </td>
+                        <td><a href="book/{{$venue->id}}" class="btn btn-primary btn-sm">Book</a></td>
                         </tr>
                     @endforeach
                 @empty

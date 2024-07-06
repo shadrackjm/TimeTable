@@ -21,6 +21,14 @@ class AdminController extends Controller
         $recent_users = User::where('id','!=',$logged_user->id)->orderBy('created_at','desc')->get();
         return view('admin.home-page',compact('logged_user','user_image','recent_users','venues'));
     }
+
+    public function allUsers(Request $request){
+        $logged_user = Auth::user();
+        $user_profile_data = UserProfile::where('user_id',$logged_user->id)->first();
+        $user_image = $user_profile_data->image;
+        $all_users = User::orderBy('created_at','desc')->get();
+        return view('admin.users',compact('all_users','logged_user','user_image',));
+    }
     public function loadProfile(){
      $logged_user = Auth::user();
         $user_profile_data = UserProfile::where('user_id',$logged_user->id)->first();
@@ -78,5 +86,33 @@ class AdminController extends Controller
                     return back()->with('fail', $th->getMessage());
         }
 
+    }
+
+    public function edit($id)
+    {
+        $logged_user = Auth::user();
+        $user_profile_data = UserProfile::where('user_id',$logged_user->id)->first();
+        $user_image = $user_profile_data->image;
+        $user = User::findOrFail($id);
+        return view('admin.edit-user', compact('user','logged_user'));
+    }
+
+    // Handle update request
+    public function update(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+        $user->update($request->all());
+        flash('User updated successfully.');
+
+        return redirect()->route('admin.users');
+    }
+
+    // Handle delete request
+    public function destroy($id)
+    {
+        $user = User::findOrFail($id);
+        $user->delete();
+        flash('User updated successfully.');
+        return redirect()->route('admin.users');
     }
 }

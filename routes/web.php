@@ -35,16 +35,20 @@ Route::group(['middleware' => 'admin'], function(){
     Route::get('/admin/profile',[AdminController::class,'loadProfile']);
 
 
-Route::get('/manage/venues', [VenueController::class, 'index'])->name('venues.index');
-Route::get('/venues/create', [VenueController::class, 'create'])->name('venues.create');
-Route::post('/venues', [VenueController::class, 'store'])->name('venues.store');
-Route::get('/venues/{id}/edit', [VenueController::class, 'edit'])->name('venues.edit');
-Route::put('/venues/{id}', [VenueController::class, 'update'])->name('venues.update');
-Route::delete('/venues/{id}', [VenueController::class, 'destroy'])->name('venues.destroy');
+    Route::get('/manage/users', [AdminController::class, 'allUsers'])->name('admin.users');
+    Route::get('/manage/venues', [VenueController::class, 'index'])->name('venues.index');
+    Route::get('/venues/create', [VenueController::class, 'create'])->name('venues.create');
+    Route::post('/venues', [VenueController::class, 'store'])->name('venues.store');
+    Route::get('/venues/{id}/edit', [VenueController::class, 'edit'])->name('venues.edit');
+    Route::put('/venues/{id}', [VenueController::class, 'update'])->name('venues.update');
+    Route::delete('/venues/{id}', [VenueController::class, 'destroy'])->name('venues.destroy');
 
-Route::post('/admin/profile/update', [AdminController::class, 'updateProfile'])->name('admin.update-profile');
-Route::post('/admin/password/update', [AdminController::class, 'updatePassword'])->name('admin.update-password');
+    Route::post('/admin/profile/update', [AdminController::class, 'updateProfile'])->name('admin.update-profile');
+    Route::post('/admin/password/update', [AdminController::class, 'updatePassword'])->name('admin.update-password');
 
+    Route::get('/edit/user/{id}', [AdminController::class, 'edit'])->name('user.edit');
+    Route::post('/update/user/{id}', [AdminController::class, 'update'])->name('user.update');
+    Route::delete('/delete/user/{id}', [AdminController::class, 'destroy'])->name('user.destroy');
 });
 
 // student
@@ -58,7 +62,7 @@ Route::group(['middleware' => 'student'], function(){
 
 // lecturer
 Route::group(['middleware' => 'lecturer'], function(){
-    Route::get('/lecturer/home',[TeacherController::class,'loadHomePage']);
+    Route::get('/lecturer/home',[TeacherController::class,'loadHomePage'])->name('lecturer-home');
     Route::get('/lecturer/profile',[TeacherController::class,'loadProfile']);
 
     Route::post('/profile/update', [TeacherController::class, 'updateProfile'])->name('lecturer.update-profile');

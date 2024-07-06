@@ -20,7 +20,7 @@
 
             <!-- Sales Card -->
             <div class="col-xxl-4 col-md-6">
-                <a href="/admin/users">
+                <a href="/manage/users">
               <div class="card info-card sales-card">
                 <div class="card-body">
                   <h5 class="card-title">Users</h5>

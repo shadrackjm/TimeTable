@@ -161,6 +161,12 @@
         </a>
       </li>
       <li class="nav-item">
+        <a class="nav-link collapsed" href="/manage/users">
+          <i class="bi bi-people"></i>
+          <span>Manage Users</span>
+        </a>
+      </li>
+      <li class="nav-item">
         <a class="nav-link collapsed" href="/admin/profile">
           <i class="bi bi-person"></i>
           <span>Profile</span>
