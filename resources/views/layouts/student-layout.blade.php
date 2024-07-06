@@ -26,10 +26,9 @@
   <link href="{{ asset('css/font-awesome.min.css') }}" rel="stylesheet">
   <script src="{{ asset('js/jquery.min.js') }}"></script>
   <script src="{{ asset('js/export-excel.min.js') }}"></script>
-  <script src="{{ asset('row_merger/dist/row-merge-bundle.min.js') }}"></script>
   <!-- Template Main CSS File -->
   <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
-@vite('resources/css/app.css')
+    @vite('resources/css/app.css')
   {{-- i will change the link href to use laravel blade format so remove the normal links
         and change all links as for style.css
     --}}
@@ -136,7 +135,11 @@
   </aside><!-- End Sidebar-->
 
   <main id="main" class="main">
+    @include('flash::message')
         @yield('space-work')
+        <script>
+            $('div.alert').not('.alert-important').delay(3000).fadeOut(350);
+            </script>
   </main><!-- End #main -->
 
 

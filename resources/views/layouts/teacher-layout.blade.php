@@ -7,7 +7,8 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Dashboard - NiceAdmin Bootstrap Template</title>
+  <title>{{ $page_title ?? 'Page Title'}}</title>
+
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -165,7 +166,11 @@
   </aside><!-- End Sidebar-->
 
   <main id="main" class="main">
-        @yield('space-work')
+        @include('flash::message')
+            @yield('space-work')
+        <script>
+        $('div.alert').not('.alert-important').delay(3000).fadeOut(350);
+        </script>
   </main><!-- End #main -->
 
 

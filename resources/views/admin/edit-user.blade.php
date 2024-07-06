@@ -1,5 +1,15 @@
 @extends('layouts.admin-layout')
 @section('space-work')
+<div class="pagetitle">
+    <h1>Edit User</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/admin/home">Dashboard</a></li>
+            <li class="breadcrumb-item active">Edit User </li>
+        </ol>
+    </nav>
+</div><!-- End Page Title -->
+
     <div class="card">
         <div class="card-header">Edit user Details</div>
         <div class="card-body">

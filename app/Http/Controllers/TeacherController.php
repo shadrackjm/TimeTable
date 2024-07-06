@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\VenueBooked;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\TimeTable;
@@ -13,6 +14,46 @@ use Illuminate\Support\Facades\Storage;
 
 class TeacherController extends Controller
 {
+
+    public function bookRoom($id){
+        $logged_user = Auth::user();
+        $venue = TimeTable::findOrFail($id);
+        return view("teacher_lecturer.booking-room",compact("logged_user",'venue'));
+    }
+
+    public function book(Request $request, $id)
+    {
+        $dayOfWeek = Carbon::now()->format('l');
+        $venue = TimeTable::findOrFail($id);
+        $venue->update([
+            'status' => 'occupied',
+        ]);
+
+        $new_booking = new VenueBooked();
+        $new_booking->venue_id = $venue->id;
+        $new_booking->user_id = Auth::user()->id;
+        $new_booking->time_slot = $request->input('time_slot');
+        $new_booking->day_of_week = $dayOfWeek;
+        $new_booking->save();
+
+        flash('Venue Booked successfully.');
+
+        return redirect()->route('lecturer-home');
+    }
+    public function bookRoomUpdate(Request $request, $id){
+
+        $venue = TimeTable::findOrFail($id);
+
+        $venue->update([
+            'status' => 'available',
+        ]);
+
+        $booking = VenueBooked::where('venue_id', $venue->id)->first();
+
+        $booking->delete();
+        flash('Venue Booked successfully.');
+        return redirect()->route('lecturer-home');
+    }
     public function loadHomePage(Request $request){
          $dayOfWeek = Carbon::now()->format('l');
         $query = TimeTable::where('day', $dayOfWeek);

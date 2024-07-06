@@ -36,6 +36,8 @@ Route::group(['middleware' => 'admin'], function(){
 
 
     Route::get('/manage/users', [AdminController::class, 'allUsers'])->name('admin.users');
+    Route::get('/booked/venues', [AdminController::class, 'bookedVenue'])->name('booked.venue');
+
     Route::get('/manage/venues', [VenueController::class, 'index'])->name('venues.index');
     Route::get('/venues/create', [VenueController::class, 'create'])->name('venues.create');
     Route::post('/venues', [VenueController::class, 'store'])->name('venues.store');
@@ -64,6 +66,10 @@ Route::group(['middleware' => 'student'], function(){
 Route::group(['middleware' => 'lecturer'], function(){
     Route::get('/lecturer/home',[TeacherController::class,'loadHomePage'])->name('lecturer-home');
     Route::get('/lecturer/profile',[TeacherController::class,'loadProfile']);
+
+    Route::get('/book/{id}',[TeacherController::class,'bookRoom']);
+    Route::post('/book/venue/{id}', [TeacherController::class, 'book'])->name('book.venue');
+    Route::post('/un-book/venue/{id}', [TeacherController::class, 'bookRoomUpdate'])->name('unbook.venue');
 
     Route::post('/profile/update', [TeacherController::class, 'updateProfile'])->name('lecturer.update-profile');
     Route::post('/password/update', [TeacherController::class, 'updatePassword'])->name('lecturer.update-password');

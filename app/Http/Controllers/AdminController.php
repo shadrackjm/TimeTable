@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\User;
 use App\Models\TimeTable;
 use App\Models\UserProfile;
+use App\Models\VenueBooked;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -28,6 +30,13 @@ class AdminController extends Controller
         $user_image = $user_profile_data->image;
         $all_users = User::orderBy('created_at','desc')->get();
         return view('admin.users',compact('all_users','logged_user','user_image',));
+    }
+
+    public function bookedVenue(){
+        $dayOfWeek = Carbon::now()->format('l');
+
+        $logged_user = Auth::user();
+       return $booked_venues = VenueBooked::where('day_of_week',$dayOfWeek)->with('venue','user')->get();
     }
     public function loadProfile(){
      $logged_user = Auth::user();
