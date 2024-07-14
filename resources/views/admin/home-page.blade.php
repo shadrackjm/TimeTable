@@ -42,7 +42,7 @@
 
             <!-- Revenue Card -->
             <div class="col-xxl-4 col-md-6">
-                <a href="/admin/blood-requests">
+                <a href="/manage/venues">
               <div class="card info-card revenue-card">
                 <div class="card-body">
                   <h5 class="card-title">Venues</h5>
@@ -75,14 +75,7 @@
               <div class="card recent-sales overflow-auto">
 
                 <div class="filter">
-                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                    <li class="dropdown-header text-start">
-                      <h6>Filter</h6>
-                    </li>
-
-                    <li><a class="dropdown-item" href="#">This Week</a></li>
-                  </ul>
+                  <a href="/manage/users" class="btn btn-primary btn-sm mx-2">view all</a>
                 </div>
 
                 <div class="card-body">
@@ -92,10 +85,9 @@
                       <tr>
                         <th scope="col">#</th>
                         <th scope="col">Full Name</th>
-                        <th scope="col">Amount</th>
-                        <th scope="col">Price</th>
-                        <th scope="col">Status</th>
-                        <th scope="col">Request Date</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Role</th>
+                        <th scope="col">Registration Date</th>
                         <th scope="col" colspan="3" class="text-center">Action</th>
                       </tr>
                     </thead>
@@ -104,21 +96,19 @@
                           @foreach ($recent_users as $item)
                               <tr>
                                 <th scope="row">{{$loop->iteration}}</th>
-                                <td>{{$item->Name}}</td>
-                                <td>{{$item->blood_group}}</td>
-                                <td>{{$item->amount}}</td>
-                                <td>{{$item->price}}</td>
-                                <td>@if ($item->status == 1)
-                                     <span class="badge bg-success">approved</span>
+                                <td>{{$item->name}}</td>
+                                <td>{{$item->email}}</td>
+                                <td>@if ($item->role == 1)
+                                     <span class="badge bg-success">Teacher/Lecturer</span>
                                 @endif
-                                @if ($item->status == 0)
-                                  <span class="badge bg-warning">pending</span></td>
+                                @if ($item->role == 0)
+                                  <span class="badge bg-warning">Student</span></td>
                                 @endif
-                                @if ($item->status == 2)
-                                  <span class="badge bg-danger">failed</span></td>
+                                @if ($item->role == 2)
+                                  <span class="badge bg-danger">Admin</span></td>
                                 @endif
                                 <td>{{$item->created_at}}</td>
-                                <td><a href="/admin/edit/{{$item->id}}" class="btn btn-primary btn-sm">Edit</a></td>
+                                <td><a href="/edit/user/{{$item->id}}" class="btn btn-primary btn-sm">Edit</a></td>
                               </tr>
                           @endforeach
                       @else
