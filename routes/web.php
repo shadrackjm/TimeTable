@@ -56,6 +56,9 @@ Route::group(['middleware' => 'admin'], function(){
 
     Route::post('/unbook/venue/{id}', [AdminController::class, 'unbookRoomUpdate'])->name('un-book');
 
+    Route::get('add/user', [AdminController::class,'loadAddForm'])->name('load-add');
+    Route::post('/user', [AdminController::class, 'store'])->name('user.store');
+
 });
 
 // student

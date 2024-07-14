@@ -81,7 +81,7 @@
                     @endforeach
                 @empty
                     <tr>
-                        <td colspan="2">No venues found</td>
+                        <td colspan="2">All Venues Are Available</td>
                     </tr>
                 @endforelse
         </tbody>

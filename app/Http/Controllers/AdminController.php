@@ -54,6 +54,38 @@ class AdminController extends Controller
         flash('Venue Booked successfully.');
         return redirect()->route('booked.venue');
     }
+
+    public function loadAddForm(){
+        $logged_user = Auth::user();
+        return view('admin.create-user',compact('logged_user'));
+    }
+
+    public function store(Request $request){
+        $request->validate([
+            'name'=> 'required',
+            'email'=> 'required|email|unique:users',
+            'role'=> 'required',
+        ]);
+
+        try {
+            $user = new User;
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->role = $request->role;
+            $user->password = Hash::make('123456');
+            $user->save();
+
+            // add user_id in user_profiles table
+            $user_profile = new UserProfile;
+            $user_profile->user_id = $user->id;
+            $user_profile->save();
+
+            return redirect('/manage/users')->with('success','You Have been Registered Successfully!');
+        } catch (\Exception $e) {
+            return redirect('/add/user')->with('error',$e->getMessage());
+
+        }
+    }
     public function loadProfile(){
      $logged_user = Auth::user();
         $user_profile_data = UserProfile::where('user_id',$logged_user->id)->first();

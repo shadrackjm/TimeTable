@@ -17,7 +17,7 @@
         <div class="alert alert-danger p-2">{{Session::get('fail')}}</div>
     @endif
     <div class="card">
-        <div class="card-header">Manage all users</div>
+        <div class="card-header">Manage all users <a href="/add/user" class="btn btn-success btn-sm float-end">Add new</a></div>
         <div class="card-body">
             <table class="table table-bordered">
                 <thead>
