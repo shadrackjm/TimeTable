@@ -2,16 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use App\Mail\VenueMail;
 use App\Models\TimeTable;
 use App\Models\UserProfile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class VenueController extends Controller
 {
     public function index(Request $request)
-    {   
-        
+    {
+
         $logged_user = Auth::user();
         $user_profile_data = UserProfile::where('user_id',$logged_user->id)->first();
         $user_image = $user_profile_data->image;
@@ -40,9 +43,14 @@ class VenueController extends Controller
             'venue_data' => 'required',
         ]);
 
-        TimeTable::create([
-            'venue_data' => $request->venue_data,
-        ]);
+        $new_venue = new TimeTable();
+        $new_venue->venue_data = $request->venue_data;
+        $new_venue->save();
+
+        $users = User::whereIn('role', [0, 1, 2])->get();
+        foreach ($users as $user) {
+            Mail::to($user->email)->send(new VenueMail($new_venue, 'new'));
+        }
         flash('Venue added successfully.');
         return redirect()->route('venues.index')
             ->with('success', 'Venue added successfully.');
@@ -73,6 +81,10 @@ class VenueController extends Controller
             'day' => $request->day,
             'time_slot' => $request->time_slot,
         ]);
+        $users = User::whereIn('role', [1, 2, 0])->get();
+        foreach ($users as $user) {
+            Mail::to($user->email)->send(new VenueMail($venue, 'update'));
+        }
         flash('Venue updated successfully.');
         return redirect()->route('venues.index')
             ->with('success', 'Venue updated successfully.');

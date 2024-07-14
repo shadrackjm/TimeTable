@@ -61,7 +61,7 @@
             <tr>
                 <th>Time</th>
                 <th>Venues</th>
-                <th>Action</th>
+                <th colspan="2">Action</th>
             </tr>
         </thead>
         <tbody>
@@ -98,7 +98,11 @@
                     @endforeach
                 @empty
                     <tr>
-                        <td colspan="2">No venues found</td>
+                        @if ($dayOfWeek == 'Saturday' || $dayOfWeek == 'Sunday')
+                            <td colspan="3"><div class="alert alert-success">All Venues Are Available in Weekends</div></td>
+                        @else
+                            <td colspan="3">No Available Venue Added</td>
+                        @endif
                     </tr>
                 @endforelse
         </tbody>

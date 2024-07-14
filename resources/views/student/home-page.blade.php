@@ -80,8 +80,12 @@
                         </tr>
                     @endforeach
                 @empty
+                        @if ($dayOfWeek == 'Saturday' || $dayOfWeek == 'Sunday')
+                            <td colspan="2"><div class="alert alert-success">All Venues Are Available in Weekends</div></td>
+                        @else
+                            <td colspan="2">No Available Venue Added</td>
+                        @endif
                     <tr>
-                        <td colspan="2">All Venues Are Available</td>
                     </tr>
                 @endforelse
         </tbody>
