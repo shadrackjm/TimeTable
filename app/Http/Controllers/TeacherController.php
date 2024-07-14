@@ -48,10 +48,8 @@ class TeacherController extends Controller
             'status' => 'available',
             'book_status' => 0,
         ]);
+        VenueBooked::where('venue_id',$id)->delete();
 
-        $booking = VenueBooked::where('venue_id', $venue->id)->first();
-
-        $booking->delete();
         flash('Venue Booked successfully.');
         return redirect()->route('lecturer-home');
     }

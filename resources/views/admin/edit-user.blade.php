@@ -28,7 +28,7 @@
                 </div>
                 <!-- Add other fields as needed -->
 
-                <button type="submit" class="btn btn-primary">Update</button>
+                <button type="submit" class="btn btn-primary my-2">Update</button>
             </form>
         </div>
     </div>

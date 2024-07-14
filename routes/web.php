@@ -54,6 +54,8 @@ Route::group(['middleware' => 'admin'], function(){
 
     Route::get('/approve/booking/{id}', [AdminController::class, 'approve'])->name('approve.booking');
 
+    Route::post('/unbook/venue/{id}', [AdminController::class, 'unbookRoomUpdate'])->name('un-book');
+
 });
 
 // student

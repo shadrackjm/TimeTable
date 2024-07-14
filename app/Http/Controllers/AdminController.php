@@ -36,7 +36,23 @@ class AdminController extends Controller
         $dayOfWeek = Carbon::now()->format('l');
 
         $logged_user = Auth::user();
-       return $booked_venues = VenueBooked::where('day_of_week',$dayOfWeek)->with('venue','user')->get();
+        $booked_venues = VenueBooked::where('day_of_week',$dayOfWeek)
+        ->with('venue','user')->get();
+        return view('admin.booked-venues',compact('logged_user','booked_venues'));
+    }
+
+    public function unbookRoomUpdate(Request $request, $id){
+
+        $venue = TimeTable::findOrFail($id);
+        $venue->update([
+            'status' => 'available',
+            'book_status' => 0,
+        ]);
+
+        VenueBooked::where('venue_id',$id)->first()->delete();
+
+        flash('Venue Booked successfully.');
+        return redirect()->route('booked.venue');
     }
     public function loadProfile(){
      $logged_user = Auth::user();
