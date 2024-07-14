@@ -14,5 +14,6 @@ class TimeTable extends Model
             'status',
             'day',
             'time_slot',
+            'book_status',
     ];
 }

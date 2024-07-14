@@ -26,7 +26,7 @@ class TeacherController extends Controller
         $dayOfWeek = Carbon::now()->format('l');
         $venue = TimeTable::findOrFail($id);
         $venue->update([
-            'status' => 'occupied',
+            'book_status' => 1,
         ]);
 
         $new_booking = new VenueBooked();
@@ -46,6 +46,7 @@ class TeacherController extends Controller
 
         $venue->update([
             'status' => 'available',
+            'book_status' => 0,
         ]);
 
         $booking = VenueBooked::where('venue_id', $venue->id)->first();

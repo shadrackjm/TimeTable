@@ -48,6 +48,19 @@ class AdminController extends Controller
         return view('admin.user-profile',compact('logged_user','user_image','user_data'));
     }
 
+    public function approve($id){
+        $venue = TimeTable::find($id);
+
+        $venue->update([
+            'book_status' => 2,
+            'status'=> 'occupied',
+        ]);
+
+        flash('approved successfully','success');
+
+        return redirect()->back();
+    }
+
     public function UpdateProfile(Request $request){
 
         try {

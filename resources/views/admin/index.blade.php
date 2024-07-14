@@ -61,18 +61,18 @@
                 @if ($venues->count() > 0)
                     <table class="table table-bordered">
                         <thead>
-                            <tr>
+                            <tr class="text-center">
                                 <th>ID</th>
                                 <th>Venue</th>
                                 <th>Day of the week</th>
                                 <th>Time Slot</th>
                                 <th>Status</th>
-                                <th>Actions</th>
+                                <th colspan="3">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($venues as $venue)
-                                <tr>
+                                <tr class="text-center">
                                     <td>{{ $venue->id }}</td>
                                     <td>{{ $venue->venue_data }}</td>
                                     <td>{{ $venue->day }}</td>
@@ -82,14 +82,22 @@
                                     @else
                                         <td><span class="badge-unavailable">{{ ucfirst($venue->status)}}</span></td>
                                     @endif
-                                    <td>
-                                        <a href="{{ route('venues.edit', $venue->id) }}" class="btn btn-primary btn-sm">Edit</a>
-                                        <form action="{{ route('venues.destroy', $venue->id) }}" method="POST" class="d-inline">
+
+                                        @if ($venue->book_status == 1)
+                                           <td>
+                                            <a href="/approve/booking/{{$venue->id}}" class="btn btn-warning btn-sm"><i class="bi bi-check-circle"></i></a>
+                                           </td>
+                                        @else
+                                        <td></td>
+                                        @endif
+                                        <td><a href="{{ route('venues.edit', $venue->id) }}" class="btn btn-primary btn-sm">Edit</a></td>
+                                        <td><form action="{{ route('venues.destroy', $venue->id) }}" method="POST" class="d-inline">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this venue?')">Delete</button>
-                                        </form>
-                                    </td>
+                                        </form></td>
+
+
                                 </tr>
                             @endforeach
                         </tbody>

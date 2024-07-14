@@ -51,6 +51,9 @@ Route::group(['middleware' => 'admin'], function(){
     Route::get('/edit/user/{id}', [AdminController::class, 'edit'])->name('user.edit');
     Route::post('/update/user/{id}', [AdminController::class, 'update'])->name('user.update');
     Route::delete('/delete/user/{id}', [AdminController::class, 'destroy'])->name('user.destroy');
+
+    Route::get('/approve/booking/{id}', [AdminController::class, 'approve'])->name('approve.booking');
+
 });
 
 // student

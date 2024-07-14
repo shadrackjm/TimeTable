@@ -78,17 +78,22 @@
                                 {{ ucfirst($venue->status) }}
                             </span>
                         </td>
-                        @if ($venue->status == 'occupied')
-                        <td>
-                            <form action="{{ route('unbook.venue', $venue->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to un book this venue?');">
-                                @csrf
-                                @method('POST')
-                                <button type="submit" class="btn btn-warning btn-sm">Un-Book</button>
-                            </form>
-                        </td>
+                        @if ($venue->book_status == 1)
+                            <td><span class="badge bg-warning">Pending</span></td>
                         @else
-                            <td><a href="/book/{{$venue->id}}" class="btn btn-primary btn-sm">Book</a></td>
+                            @if ($venue->status == 'occupied')
+                            <td>
+                                <form action="{{ route('unbook.venue', $venue->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to un book this venue?');">
+                                    @csrf
+                                    @method('POST')
+                                    <button type="submit" class="btn btn-warning btn-sm">Un-Book</button>
+                                </form>
+                            </td>
+                            @else
+                                <td><a href="/book/{{$venue->id}}" class="btn btn-primary btn-sm">Book</a></td>
+                            @endif
                         @endif
+
                         </tr>
                     @endforeach
                 @empty
