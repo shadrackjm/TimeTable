@@ -168,9 +168,9 @@
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link collapsed" href="/booked/venues">
+        <a class="nav-link collapsed" href="/manage/timetable">
           <i class="bi bi-back"></i>
-          <span>Booked Venue</span>
+          <span>Manage TimeTable</span>
         </a>
       </li>
       <li class="nav-item">

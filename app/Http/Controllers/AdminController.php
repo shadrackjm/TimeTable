@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\VenueImport;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Venue;
@@ -32,7 +33,22 @@ class AdminController extends Controller
     }
 
 
+    public function showVenueImportForm()
+    {
+        $logged_user = Auth::user();
+        return view('admin.import_venues',compact('logged_user',));
+    }
 
+    public function importVenue(Request $request)
+    {
+        $request->validate([
+            'venue' => 'required|mimes:xlsx,xls'
+        ]);
+
+        Excel::import(new VenueImport, $request->file('venue'));
+
+        return redirect()->back()->with('success', 'Venues imported successfully.');
+    }
     public function showImportForm()
     {
         $logged_user = Auth::user();
@@ -49,19 +65,7 @@ class AdminController extends Controller
 
         return redirect()->back()->with('success', 'Timetable imported successfully.');
     }
-    public function unbookRoomUpdate(Request $request, $id){
 
-        // $venue = TimeTable::findOrFail($id);
-        // $venue->update([
-        //     'status' => 'available',
-        //     'book_status' => 0,
-        // ]);
-
-        // VenueBooked::where('venue_id',$id)->first()->delete();
-
-        flash('Venue Booked successfully.');
-        return redirect()->route('booked.venue');
-    }
 
     public function loadAddForm(){
         $logged_user = Auth::user();
@@ -104,18 +108,7 @@ class AdminController extends Controller
         return view('admin.user-profile',compact('logged_user','user_image','user_data'));
     }
 
-    public function approve($id){
-        $venue = TimeTable::find($id);
-
-        $venue->update([
-            'book_status' => 2,
-            'status'=> 'occupied',
-        ]);
-
-        flash('approved successfully','success');
-
-        return redirect()->back();
-    }
+    
 
     public function UpdateProfile(Request $request){
 

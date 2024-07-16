@@ -14,16 +14,28 @@ use Illuminate\Support\Facades\Storage;
 
 class StudentController extends Controller
 {
-    public function loadHomePage(Request $request){
-        $dayOfWeek = Carbon::now()->format('l'); // Get current day of the week
-        $availableSessions = VenueSession::with(['venue', 'teacher'])
-            ->where('day_of_week', $dayOfWeek)
-            ->where('is_skipped', true)
-            ->get();
+    public function loadHomePage(Request $request)
+{
+    $dayOfWeek = Carbon::now()->format('l'); // Get current day of the week
+    // Start with the base query
+    $query = VenueSession::with(['venue', 'teacher'])
+        ->where('is_skipped', true);
 
-        $logged_user = Auth::user();
-        return view('student.home-page',compact('availableSessions','logged_user','dayOfWeek'));
+    // Handle search query
+    if ($request->has('search')) {
+        $search = $request->input('search');
+        $query->whereHas('venue', function($q) use ($search) {
+            $q->where('name', 'like', '%' . $search . '%');
+        });
     }
+
+    // Fetch the results and sort by day of the week
+    $availableSessions = $query->orderBy('day_of_week')->get();
+
+    $logged_user = Auth::user();
+    return view('student.home-page', compact('availableSessions', 'logged_user', 'dayOfWeek'));
+}
+
 
     public function loadProfile(){
         $logged_user = Auth::user();

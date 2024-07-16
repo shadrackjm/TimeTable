@@ -36,10 +36,13 @@ Route::group(['middleware' => 'admin'], function(){
 
 
     Route::get('/manage/users', [AdminController::class, 'allUsers'])->name('admin.users');
-    Route::get('/booked/venues', [AdminController::class, 'bookedVenue'])->name('booked.venue');
 
     Route::get('/import-form', [AdminController::class, 'showImportForm'])->name('admin.import-form');
     Route::post('/import-timetable', [AdminController::class, 'importTimetable'])->name('admin.import-timetable');
+
+
+    Route::get('/import-venue-form', [AdminController::class, 'showVenueImportForm'])->name('admin.import-venue-form');
+    Route::post('/import-venues', [AdminController::class, 'importVenue'])->name('admin.import-venue');
 
     Route::get('/manage/venues', [VenueController::class, 'index'])->name('venues.index');
     Route::get('/venues/create', [VenueController::class, 'create'])->name('venues.create');
@@ -48,6 +51,11 @@ Route::group(['middleware' => 'admin'], function(){
     Route::put('/venues/{id}', [VenueController::class, 'update'])->name('venues.update');
     Route::delete('/venues/{id}', [VenueController::class, 'destroy'])->name('venues.destroy');
 
+
+    Route::get('/timetable/{id}/edit', [VenueController::class, 'edittimetable'])->name('timetable.edit');
+    Route::put('/timetable/{id}', [VenueController::class, 'updatetimetable'])->name('timetable.update');
+    Route::delete('/timetable/{id}', [VenueController::class, 'destroytimetable'])->name('timetable.destroy');
+
     Route::post('/admin/profile/update', [AdminController::class, 'updateProfile'])->name('admin.update-profile');
     Route::post('/admin/password/update', [AdminController::class, 'updatePassword'])->name('admin.update-password');
 
@@ -55,12 +63,11 @@ Route::group(['middleware' => 'admin'], function(){
     Route::post('/update/user/{id}', [AdminController::class, 'update'])->name('user.update');
     Route::delete('/delete/user/{id}', [AdminController::class, 'destroy'])->name('user.destroy');
 
-    Route::get('/approve/booking/{id}', [AdminController::class, 'approve'])->name('approve.booking');
-
-    Route::post('/unbook/venue/{id}', [AdminController::class, 'unbookRoomUpdate'])->name('un-book');
-
     Route::get('add/user', [AdminController::class,'loadAddForm'])->name('load-add');
     Route::post('/user', [AdminController::class, 'store'])->name('user.store');
+
+
+    Route::get('/manage/timetable', [VenueController::class, 'timetable'])->name('timetable.index');
 
 });
 

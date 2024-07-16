@@ -45,6 +45,7 @@ class TeacherController extends Controller
     }
     public function loadHomePage(Request $request){
         $teacherId = auth()->user()->id;
+        $dayOfWeek = Carbon::now()->format('l');
         $daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
         $timetables = [];
 
@@ -55,7 +56,7 @@ class TeacherController extends Controller
         }
 
         $logged_user = Auth::user();
-        return view('teacher_lecturer.home-page',compact('timetables','logged_user','timetables','daysOfWeek'));
+        return view('teacher_lecturer.home-page',compact('dayOfWeek','timetables','logged_user','timetables','daysOfWeek'));
     }
 
     public function loadProfile(){
