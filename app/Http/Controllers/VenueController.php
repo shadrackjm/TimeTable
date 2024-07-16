@@ -70,10 +70,11 @@ class VenueController extends Controller
         $new_venue->name = $request->venue_data;
         $new_venue->save();
 
-        // $users = User::whereIn('role', [0, 1, 2])->get();
-        // foreach ($users as $user) {
-        //     Mail::to($user->email)->send(new VenueMail($new_venue, 'new'));
-        // }
+        $users = User::whereIn('role', [0, 1, 2])->get();
+        foreach ($users as $user) {
+            Mail::to($user->email)->send(new VenueMail($new_venue, 'new'));
+        }
+
         flash('Venue added successfully.');
         return redirect()->route('venues.index')
             ->with('success', 'Venue added successfully.');

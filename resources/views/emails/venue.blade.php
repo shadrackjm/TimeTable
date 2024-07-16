@@ -13,5 +13,4 @@ A venue has been updated with the following details:<br>
 @endif
 
 Thanks,<br>
-{{ config('app.name') }}
 @endcomponent
