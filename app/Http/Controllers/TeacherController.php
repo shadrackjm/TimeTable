@@ -38,7 +38,7 @@ class TeacherController extends Controller
             return redirect()->back()->with('error', 'You cannot book your own session.');
         }
 
-        $session->teacher_id = auth()->id();
+        $session->is_booked = true;
         $session->save();
 
         return redirect()->back()->with('success', 'Session booked successfully.');

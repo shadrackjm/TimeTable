@@ -56,19 +56,29 @@
                                                 @if ($session->is_skipped == true)
                                                     <button type="button" class="btn btn-success btn-sm">Available</button>
                                                 @else
-                                                    <form action="{{ route('teacher.mark-skipped', $session->id) }}" method="POST" class="d-inline">
-                                                        @csrf
-                                                        <button type="submit" class="btn btn-warning btn-sm">Make available</button>
-                                                    </form>
+                                                    @if ($session->is_booked)
+                                                        <button type="button" class="btn btn-secondary btn-sm">Booked</button>
+                                                    @else
+                                                        <form action="{{ route('teacher.mark-skipped', $session->id) }}" method="POST" class="d-inline">
+                                                            @csrf
+                                                            <button type="submit" class="btn btn-warning btn-sm">Make available</button>
+                                                        </form>
+                                                    @endif
+
                                                 @endif
                                             @else
                                                 @if ($session->is_skipped == true)
-                                                    <button type="button" class="btn btn-success btn-sm">Available</button>
+                                                        <button type="button" class="btn btn-success btn-sm">Available</button>
                                                 @else
-                                                    <form action="{{ route('teacher.book-session', $session->id) }}" method="POST" class="d-inline">
-                                                        @csrf
-                                                        <button type="submit" class="btn btn-primary btn-sm">Book Session</button>
-                                                    </form>
+                                                    @if ($session->is_booked)
+                                                        <button type="button" class="btn btn-secondary btn-sm">Booked</button>
+                                                        @else
+                                                        <form action="{{ route('teacher.book-session', $session->id) }}" method="POST" class="d-inline">
+                                                            @csrf
+                                                            <button type="submit" class="btn btn-primary btn-sm">Book Session</button>
+                                                        </form>
+                                                    @endif
+
                                                 @endif
                                             @endif
                                         </td>

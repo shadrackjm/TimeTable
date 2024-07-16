@@ -20,6 +20,7 @@ return new class extends Migration
             $table->time('start_time');
             $table->time('end_time');
             $table->boolean('is_skipped')->default(false);
+            $table->boolean('is_booked')->default(false);
             $table->timestamps();
 
             $table->foreign('venue_id')->references('id')->on('venues')->onDelete('cascade');
