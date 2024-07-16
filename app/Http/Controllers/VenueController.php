@@ -97,10 +97,6 @@ class VenueController extends Controller
         $venue->update([
             'name' => $request->venue_data,
         ]);
-        // $users = User::whereIn('role', [1, 2, 0])->get();
-        // foreach ($users as $user) {
-        //     Mail::to($user->email)->send(new VenueMail($venue, 'update'));
-        // }
         flash('Venue updated successfully.');
         return redirect()->route('venues.index')
             ->with('success', 'Venue updated successfully.');
