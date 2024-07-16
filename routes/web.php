@@ -38,6 +38,9 @@ Route::group(['middleware' => 'admin'], function(){
     Route::get('/manage/users', [AdminController::class, 'allUsers'])->name('admin.users');
     Route::get('/booked/venues', [AdminController::class, 'bookedVenue'])->name('booked.venue');
 
+    Route::get('/import-form', [AdminController::class, 'showImportForm'])->name('admin.import-form');
+    Route::post('/import-timetable', [AdminController::class, 'importTimetable'])->name('admin.import-timetable');
+
     Route::get('/manage/venues', [VenueController::class, 'index'])->name('venues.index');
     Route::get('/venues/create', [VenueController::class, 'create'])->name('venues.create');
     Route::post('/venues', [VenueController::class, 'store'])->name('venues.store');
@@ -65,8 +68,8 @@ Route::group(['middleware' => 'admin'], function(){
 Route::group(['middleware' => 'student'], function(){
     Route::get('/student/home',[StudentController::class,'loadHomePage'])->name('home-student');
     Route::get('/profile',[StudentController::class,'loadProfile']);
-    Route::post('/profile/update', [StudentController::class, 'updateProfile'])->name('student.update-profile');
-    Route::post('/password/update', [StudentController::class, 'updatePassword'])->name('student.update-password');
+    Route::post('/lecturer/profile/update', [StudentController::class, 'updateProfile'])->name('student.update-profile');
+    Route::post('/lecturer/password/update', [StudentController::class, 'updatePassword'])->name('student.update-password');
 
 });
 
@@ -75,9 +78,9 @@ Route::group(['middleware' => 'lecturer'], function(){
     Route::get('/lecturer/home',[TeacherController::class,'loadHomePage'])->name('lecturer-home');
     Route::get('/lecturer/profile',[TeacherController::class,'loadProfile']);
 
-    Route::get('/book/{id}',[TeacherController::class,'bookRoom']);
-    Route::post('/book/venue/{id}', [TeacherController::class, 'book'])->name('book.venue');
-    Route::post('/un-book/venue/{id}', [TeacherController::class, 'bookRoomUpdate'])->name('unbook.venue');
+    Route::get('/teacher/timetable', [TeacherController::class, 'showTimetable'])->name('teacher.timetable');
+    Route::post('/mark-skipped/{id}', [TeacherController::class, 'markSkipped'])->name('teacher.mark-skipped');
+    Route::post('/book-session/{id}', [TeacherController::class, 'bookSession'])->name('teacher.book-session');
 
     Route::post('/profile/update', [TeacherController::class, 'updateProfile'])->name('lecturer.update-profile');
     Route::post('/password/update', [TeacherController::class, 'updatePassword'])->name('lecturer.update-password');

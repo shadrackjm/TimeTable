@@ -4,52 +4,60 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Models\User;
+use App\Models\Venue;
 use App\Models\TimeTable;
 use App\Models\UserProfile;
 use App\Models\VenueBooked;
 use Illuminate\Http\Request;
+use App\Imports\VenueSessionsImport;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Storage;
 
 class AdminController extends Controller
 {
    public function loadHomePage(){
         $logged_user = Auth::user();
-        $user_profile_data = UserProfile::where('user_id',$logged_user->id)->first();
-        $user_image = $user_profile_data->image;
-        $venues = TimeTable::count();
+        $venues = Venue::count();
 
         $recent_users = User::where('id','!=',$logged_user->id)->orderBy('created_at','desc')->get();
-        return view('admin.home-page',compact('logged_user','user_image','recent_users','venues'));
+        return view('admin.home-page',compact('logged_user','recent_users','venues'));
     }
 
     public function allUsers(Request $request){
         $logged_user = Auth::user();
-        $user_profile_data = UserProfile::where('user_id',$logged_user->id)->first();
-        $user_image = $user_profile_data->image;
         $all_users = User::orderBy('created_at','desc')->get();
-        return view('admin.users',compact('all_users','logged_user','user_image',));
+        return view('admin.users',compact('all_users','logged_user',));
     }
 
-    public function bookedVenue(){
-        $dayOfWeek = Carbon::now()->format('l');
 
+
+    public function showImportForm()
+    {
         $logged_user = Auth::user();
-        $booked_venues = VenueBooked::where('day_of_week',$dayOfWeek)
-        ->with('venue','user')->get();
-        return view('admin.booked-venues',compact('logged_user','booked_venues'));
+        return view('admin.import_timetable',compact('logged_user',));
     }
 
-    public function unbookRoomUpdate(Request $request, $id){
-
-        $venue = TimeTable::findOrFail($id);
-        $venue->update([
-            'status' => 'available',
-            'book_status' => 0,
+    public function importTimetable(Request $request)
+    {
+        $request->validate([
+            'timetable' => 'required|mimes:xlsx,xls'
         ]);
 
-        VenueBooked::where('venue_id',$id)->first()->delete();
+        Excel::import(new VenueSessionsImport, $request->file('timetable'));
+
+        return redirect()->back()->with('success', 'Timetable imported successfully.');
+    }
+    public function unbookRoomUpdate(Request $request, $id){
+
+        // $venue = TimeTable::findOrFail($id);
+        // $venue->update([
+        //     'status' => 'available',
+        //     'book_status' => 0,
+        // ]);
+
+        // VenueBooked::where('venue_id',$id)->first()->delete();
 
         flash('Venue Booked successfully.');
         return redirect()->route('booked.venue');

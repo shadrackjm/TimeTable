@@ -162,6 +162,12 @@
         </a>
       </li>
       <li class="nav-item">
+        <a class="nav-link collapsed" href="/import-form">
+          <i class="bi bi-file-excel"></i>
+          <span>Import TimeTable</span>
+        </a>
+      </li>
+      <li class="nav-item">
         <a class="nav-link collapsed" href="/booked/venues">
           <i class="bi bi-back"></i>
           <span>Booked Venue</span>

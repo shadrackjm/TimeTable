@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\VenueBooked;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\TimeTable;
 use App\Models\UserProfile;
+use App\Models\VenueBooked;
+use App\Models\VenueSession;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -15,66 +16,46 @@ use Illuminate\Support\Facades\Storage;
 class TeacherController extends Controller
 {
 
-    public function bookRoom($id){
-        $logged_user = Auth::user();
-        $venue = TimeTable::findOrFail($id);
-        return view("teacher_lecturer.booking-room",compact("logged_user",'venue'));
-    }
-
-    public function book(Request $request, $id)
+    public function markSkipped($id)
     {
-        $dayOfWeek = Carbon::now()->format('l');
-        $venue = TimeTable::findOrFail($id);
-        $venue->update([
-            'book_status' => 1,
-        ]);
+        $session = VenueSession::findOrFail($id);
 
-        $new_booking = new VenueBooked();
-        $new_booking->venue_id = $venue->id;
-        $new_booking->user_id = Auth::user()->id;
-        $new_booking->time_slot = $request->input('time_slot');
-        $new_booking->day_of_week = $dayOfWeek;
-        $new_booking->save();
-
-        flash('Venue Booked successfully.');
-
-        return redirect()->route('lecturer-home');
-    }
-    public function bookRoomUpdate(Request $request, $id){
-
-        $venue = TimeTable::findOrFail($id);
-
-        $venue->update([
-            'status' => 'available',
-            'book_status' => 0,
-        ]);
-        VenueBooked::where('venue_id',$id)->delete();
-
-        flash('Venue Booked successfully.');
-        return redirect()->route('lecturer-home');
-    }
-    public function loadHomePage(Request $request){
-         $dayOfWeek = Carbon::now()->format('l');
-        $query = TimeTable::where('day', $dayOfWeek);
-
-        // Search functionality
-        if ($request->has('search')) {
-            $search = $request->get('search');
-            $query->where(function($query) use ($search) {
-                $query->where('venue_data', 'LIKE', "%{$search}%")
-                      ->orWhere('time_slot', 'LIKE', "%{$search}%");
-            });
+        if ($session->teacher_id != auth()->id()) {
+            return redirect()->back()->with('error', 'You are not authorized to mark this session as skipped.');
         }
 
-        // Fetch paginated data
-        $timetables = $query->orderBy('time_slot')->paginate(10);
+        $session->is_skipped = true;
+        $session->save();
 
-        // Group the paginated data
-        $groupedTimetables = $timetables->groupBy('time_slot');
+        return redirect()->back()->with('success', 'Session marked as skipped.');
+    }
+
+    public function bookSession($id)
+    {
+        $session = VenueSession::findOrFail($id);
+
+        if ($session->teacher_id == auth()->id()) {
+            return redirect()->back()->with('error', 'You cannot book your own session.');
+        }
+
+        $session->teacher_id = auth()->id();
+        $session->save();
+
+        return redirect()->back()->with('success', 'Session booked successfully.');
+    }
+    public function loadHomePage(Request $request){
+        $teacherId = auth()->user()->id;
+        $daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+        $timetables = [];
+
+        foreach ($daysOfWeek as $day) {
+            $timetables[$day] = VenueSession::with(['venue', 'teacher'])
+                ->where('day_of_week', $day)
+                ->get();
+        }
+
         $logged_user = Auth::user();
-        $user_profile_data = UserProfile::where('user_id',$logged_user->id)->first();
-        $user_image = $user_profile_data->image;
-        return view('teacher_lecturer.home-page',compact('groupedTimetables','logged_user','user_image','timetables','dayOfWeek'));
+        return view('teacher_lecturer.home-page',compact('timetables','logged_user','timetables','daysOfWeek'));
     }
 
     public function loadProfile(){

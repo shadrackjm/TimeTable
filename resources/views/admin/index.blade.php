@@ -45,6 +45,9 @@
             <div class="card-header">
             </div>
             <div class="card-body">
+                <a href="{{ route('venues.create') }}" class="btn btn-success mb-3">Add Venue</a>
+                <a href="{{ route('venues.create') }}" class="btn btn-primary mb-3 mx-3">Import Venues</a>
+
                 <div class="mb-3">
                     <form action="{{ route('venues.index') }}" method="GET">
                         <div class="input-group">
@@ -56,7 +59,6 @@
                     </form>
                 </div>
 
-                <a href="{{ route('venues.create') }}" class="btn btn-success mb-3">Add Venue</a>
 
                 @if ($venues->count() > 0)
                     <table class="table table-bordered">
@@ -64,40 +66,20 @@
                             <tr class="text-center">
                                 <th>ID</th>
                                 <th>Venue</th>
-                                <th>Day of the week</th>
-                                <th>Time Slot</th>
-                                <th>Status</th>
                                 <th colspan="3">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($venues as $venue)
                                 <tr class="text-center">
-                                    <td>{{ $venue->id }}</td>
-                                    <td>{{ $venue->venue_data }}</td>
-                                    <td>{{ $venue->day }}</td>
-                                    <td>{{ $venue->time_slot }}</td>
-                                    @if ($venue->status == 'available')
-                                        <td><span class="badge-available">{{ ucfirst($venue->status)}}</span></td>
-                                    @else
-                                        <td><span class="badge-unavailable">{{ ucfirst($venue->status)}}</span></td>
-                                    @endif
-
-                                        @if ($venue->book_status == 1)
-                                           <td>
-                                            <a href="/approve/booking/{{$venue->id}}" class="btn btn-warning btn-sm"><i class="bi bi-check-circle"></i></a>
-                                           </td>
-                                        @else
-                                        <td></td>
-                                        @endif
-                                        <td><a href="{{ route('venues.edit', $venue->id) }}" class="btn btn-primary btn-sm">Edit</a></td>
-                                        <td><form action="{{ route('venues.destroy', $venue->id) }}" method="POST" class="d-inline">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this venue?')">Delete</button>
-                                        </form></td>
-
-
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $venue->name }}</td>
+                                    <td><a href="{{ route('venues.edit', $venue->id) }}" class="btn btn-primary btn-sm">Edit</a></td>
+                                    <td><form action="{{ route('venues.destroy', $venue->id) }}" method="POST" class="d-inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this venue?')">Delete</button>
+                                    </form></td>
                                 </tr>
                             @endforeach
                         </tbody>

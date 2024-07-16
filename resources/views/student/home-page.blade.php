@@ -2,100 +2,52 @@
 
 @section('space-work')
 <div class="pagetitle">
-    <h1>Home</h1>
+    <h1>Student Dashboard</h1>
     <nav>
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="/student/home">Dashboard</a></li>
-            <li class="breadcrumb-item active">Available venues </li>
+            <li class="breadcrumb-item active">Available Venues</li>
         </ol>
     </nav>
 </div><!-- End Page Title -->
 
-<style>
-    .timetable {
-        border-collapse: collapse;
-        width: 100%;
-    }
-    .timetable th, .timetable td {
-        border: 1px solid #ddd;
-        padding: 8px;
-        text-align: center;
-    }
-    .timetable th {
-        background-color: #f8f9fa;
-    }
-    .timetable td {
-        height: 60px;
-    }
-    .badge-available {
-        background-color: green;
-        color: white;
-        padding: 3px 7px;
-        border-radius: 5px;
-    }
-    .badge-unavailable {
-        background-color: red;
-        color: white;
-        padding: 3px 7px;
-        border-radius: 5px;
-    }
-</style>
-
 <div class="container">
     <div class="card">
-        <div class="card-header">Timetable for {{ $dayOfWeek }}</div>
+        <div class="card-header">available Venues <span  style="text-decoration: underline; font-weight:bold; font-size:18px">{{$dayOfWeek}}</span></div>
         <div class="card-body">
-
-    <!-- Search Form -->
-    <form method="GET" action="{{ route('home-student') }}" class="mb-4">
-        <div class="input-group">
-            <input type="text" name="search" class="form-control" placeholder="Search for venue or time" value="{{ request('search') }}">
-            <div class="input-group-append">
-                <button class="btn btn-primary" type="submit">Search</button>
-            </div>
-        </div>
-    </form>
-
-    <table class="table table-bordered timetable">
-        <thead>
-            <tr>
-                <th>Time</th>
-                <th>Venues</th>
-            </tr>
-        </thead>
-        <tbody>
-            @forelse ($groupedTimetables as $time_slot => $venues)
-                <tr>
-                    <td rowspan="{{ $venues->count() }}">{{ $time_slot }}</td>
-                    @foreach ($venues as $index => $venue)
-                        @if ($index > 0)
-                            <tr>
-                        @endif
-                        <td>
-                            {{ $venue->venue_data }} <br>
-                            <span class="badge {{ $venue->status == 'available' ? 'badge-available' : 'badge-unavailable' }}">
-                                {{ ucfirst($venue->status) }}
-                            </span>
-                        </td>
-                        </tr>
-                    @endforeach
-                @empty
-                        @if ($dayOfWeek == 'Saturday' || $dayOfWeek == 'Sunday')
-                            <td colspan="2"><div class="alert alert-success">All Venues Are Available in Weekends</div></td>
-                        @else
-                            <td colspan="2">No Available Venue Added</td>
-                        @endif
+            <table class="table table-bordered mt-4">
+                <thead>
                     <tr>
+                        <th>Time Range</th>
+                        <th>Venue</th>
+                        <th>Subject</th>
+                        <th>Teacher</th>
                     </tr>
-                @endforelse
-        </tbody>
-    </table>
+                </thead>
+                <tbody>
+                    @if ($dayOfWeek == 'Saturday' || $dayOfWeek == 'Sunday')
+                        <tr class="text-center">
+                            <td colspan="4">
+                                <div class="alert alert-success">
+                                    All venues are available in weekends
+                                </div>
+                            </td>
+                        </tr>
+                    @else
+                        @foreach ($availableSessions as $session)
+                            <tr>
+                                <td>{{ date('H:i A',strtotime($session->start_time)) }} - {{ date('H:i A',strtotime($session->end_time)) }}</td>
+                                <td>{{ $session->venue->name }}</td>
+                                <td>{{ $session->subject }}</td>
+                                <td>{{ $session->teacher->name }}</td>
+                            </tr>
+                        @endforeach
+                    @endif
 
-    <!-- Pagination Links -->
-    {{ $timetables->links() }}
+                </tbody>
+            </table>
         </div>
     </div>
-
 
 </div>
 @endsection
