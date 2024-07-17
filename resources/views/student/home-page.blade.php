@@ -60,7 +60,7 @@
                                 <td>{{ date('h:i A', strtotime($session->start_time)) }} - {{ date('h:i A', strtotime($session->end_time)) }}</td>
                                 <td>{{ $session->venue->name }}</td>
                                 <td>{{ $session->subject }}</td>
-                                <td>{{ $session->teacher->name }}</td>
+                                <td>{{ $session->teacher->name ?? ''}}</td>
                             </tr>
                         @endforeach
                     @endif

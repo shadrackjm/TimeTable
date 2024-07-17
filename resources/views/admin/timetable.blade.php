@@ -48,8 +48,8 @@
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ date('h:i A', strtotime($session->start_time)) }} - {{ date('h:i A', strtotime($session->end_time)) }}</td>
                                         <td>{{ $session->venue->name }}</td>
-                                        <td>{{ $session->subject }}</td>
-                                        <td>{{ $session->teacher->name }}</td>
+                                        <td>{{ $session->subject ?? '-' }}</td>
+                                        <td>{{ $session->teacher->name ?? '-' }}</td>
                                     <td><a href="{{ route('timetable.edit', $session->id) }}" class="btn btn-primary btn-sm">Edit</a></td>
                                     <td><form action="{{ route('timetable.destroy', $session->venue->id) }}" method="POST" class="d-inline">
                                         @csrf
