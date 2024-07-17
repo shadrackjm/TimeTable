@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Models\User;
+use App\Mail\VenueMail;
 use App\Models\TimeTable;
 use App\Models\UserProfile;
 use App\Models\VenueBooked;
@@ -11,6 +12,7 @@ use App\Models\VenueSession;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 
 class TeacherController extends Controller
@@ -18,7 +20,7 @@ class TeacherController extends Controller
 
     public function markSkipped($id)
     {
-        $session = VenueSession::findOrFail($id);
+        $session = VenueSession::with('venue','teacher')->findOrFail($id);
 
         if ($session->teacher_id != auth()->id()) {
             return redirect()->back()->with('error', 'You are not authorized to mark this session as skipped.');
@@ -27,7 +29,15 @@ class TeacherController extends Controller
         $session->is_skipped = true;
         $session->save();
 
-        return redirect()->back()->with('success', 'Session marked as skipped.');
+        try {
+            $users = User::whereIn('role', [0, 1])->get();
+            foreach ($users as $user) {
+                Mail::to($user->email)->send(new VenueMail($session, 'skipped'));
+            }
+            return redirect()->back()->with('success', 'Session marked as skipped.');
+        } catch (\Exception $th) {
+            return redirect()->back()->with('error', $th->getMessage());
+        }
     }
 
     public function unSkip($id)
@@ -56,7 +66,16 @@ class TeacherController extends Controller
         $session->is_booked = true;
         $session->save();
 
-        return redirect()->back()->with('success', 'Session booked successfully.');
+        try {
+            $users = User::whereIn('role', [0, 1])->get();
+            foreach ($users as $user) {
+                Mail::to($user->email)->send(new VenueMail($session, 'booked'));
+            }
+            return redirect()->back()->with('success', 'Session booked successfully.');
+        } catch (\Exception $th) {
+            return redirect()->back()->with('error', $th->getMessage());
+        }
+
     }
     public function loadHomePage(Request $request){
         $teacherId = auth()->user()->id;
