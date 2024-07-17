@@ -69,6 +69,9 @@ Route::group(['middleware' => 'admin'], function(){
 
     Route::get('/manage/timetable', [VenueController::class, 'timetable'])->name('timetable.index');
 
+    Route::post('/admin/timetable/{id}/toggle-skipped', [VenueController::class, 'toggleSkipped'])->name('timetable.toggleSkipped');
+
+
 });
 
 // student

@@ -54,6 +54,14 @@ class VenueController extends Controller
         return view('admin.timetable', compact('sessions','logged_user'));
     }
 
+    public function toggleSkipped(Request $request, $id)
+    {
+        $session = VenueSession::findOrFail($id);
+        $session->is_skipped = $request->is_skipped;
+        $session->save();
+
+        return response()->json(['success' => true]);
+    }
     public function create()
     {
         $logged_user = Auth::user();
