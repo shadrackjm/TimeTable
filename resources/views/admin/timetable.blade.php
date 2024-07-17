@@ -35,6 +35,7 @@
                         <thead>
                             <tr class="text-center">
                                 <th>#</th>
+                                <th>Day of week</th>
                                 <th>Time Range</th>
                                     <th>Venue</th>
                                     <th>Subject</th>
@@ -46,6 +47,7 @@
                             @foreach ($sessions as $session)
                                 <tr class="text-center">
                                     <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $session->day_of_week }}</td>
                                     <td>{{ date('h:i A', strtotime($session->start_time)) }} - {{ date('h:i A', strtotime($session->end_time)) }}</td>
                                         <td>{{ $session->venue->name }}</td>
                                         <td>{{ $session->subject ?? '-' }}</td>

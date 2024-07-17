@@ -87,6 +87,7 @@ Route::group(['middleware' => 'lecturer'], function(){
 
     Route::get('/teacher/timetable', [TeacherController::class, 'showTimetable'])->name('teacher.timetable');
     Route::post('/mark-skipped/{id}', [TeacherController::class, 'markSkipped'])->name('teacher.mark-skipped');
+    Route::post('/mark-unskipped/{id}', [TeacherController::class, 'unSkip'])->name('teacher.make-unavailable');
     Route::post('/book-session/{id}', [TeacherController::class, 'bookSession'])->name('teacher.book-session');
 
     Route::post('/profile/update', [TeacherController::class, 'updateProfile'])->name('lecturer.update-profile');

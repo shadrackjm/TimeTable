@@ -54,7 +54,10 @@
                                         <td>
                                             @if ($session->teacher_id == auth()->user()->id)
                                                 @if ($session->is_skipped == true)
-                                                    <button type="button" class="btn btn-success btn-sm">Available</button>
+                                                <form action="{{ route('teacher.make-unavailable', $session->id) }}" method="POST" class="d-inline">
+                                                    @csrf
+                                                    <button type="submit" class="btn btn-success btn-sm">Available</button>
+                                                </form>
                                                 @else
                                                     @if ($session->is_booked)
                                                         <button type="button" class="btn btn-secondary btn-sm">Booked</button>
@@ -68,15 +71,16 @@
                                                 @endif
                                             @else
                                                 @if ($session->is_skipped == true)
-                                                        <button type="button" class="btn btn-success btn-sm">Available</button>
+                                                    <form action="{{ route('teacher.book-session', $session->id) }}" method="POST" class="d-inline">
+                                                        @csrf
+                                                        <button type="submit" class="btn btn-primary btn-sm">Book Session</button>
+                                                    </form>
                                                 @else
                                                     @if ($session->is_booked)
                                                         <button type="button" class="btn btn-secondary btn-sm">Booked</button>
                                                         @else
-                                                        <form action="{{ route('teacher.book-session', $session->id) }}" method="POST" class="d-inline">
-                                                            @csrf
-                                                            <button type="submit" class="btn btn-primary btn-sm">Book Session</button>
-                                                        </form>
+
+                                                                <span class="badge bg-danger">Un-available</span>
                                                     @endif
 
                                                 @endif

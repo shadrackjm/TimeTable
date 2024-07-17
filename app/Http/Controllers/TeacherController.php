@@ -30,6 +30,20 @@ class TeacherController extends Controller
         return redirect()->back()->with('success', 'Session marked as skipped.');
     }
 
+    public function unSkip($id)
+    {
+        $session = VenueSession::findOrFail($id);
+
+        if ($session->teacher_id != auth()->id()) {
+            return redirect()->back()->with('error', 'You are not authorized to mark this session as skipped.');
+        }
+
+        $session->is_skipped = false;
+        $session->save();
+
+        return redirect()->back()->with('success', 'Session Restored!.');
+    }
+
     public function bookSession($id)
     {
         $session = VenueSession::findOrFail($id);
@@ -38,6 +52,7 @@ class TeacherController extends Controller
             return redirect()->back()->with('error', 'You cannot book your own session.');
         }
 
+        $session->is_skipped = false;
         $session->is_booked = true;
         $session->save();
 
