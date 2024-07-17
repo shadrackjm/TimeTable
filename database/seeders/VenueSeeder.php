@@ -16,5 +16,8 @@ class VenueSeeder extends Seeder
         Venue::create(['name' => 'Room A']);
         Venue::create(['name' => 'Room B']);
         Venue::create(['name' => 'Room C']);
+        Venue::create(['name' => 'Room D']);
+        Venue::create(['name' => 'Room E']);
+        Venue::create(['name' => 'Room F']);
     }
 }

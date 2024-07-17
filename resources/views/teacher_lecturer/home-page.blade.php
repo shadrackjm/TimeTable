@@ -50,7 +50,7 @@
                                         <td>{{ date('h:i A', strtotime($session->start_time)) }} - {{ date('h:i A', strtotime($session->end_time)) }}</td>
                                         <td>{{ $session->venue->name }}</td>
                                         <td>{{ $session->subject }}</td>
-                                        <td>{{ $session->teacher->name }}</td>
+                                        <td>{{ $session->teacher->name ?? '' }}</td>
                                         <td>
                                             @if ($session->teacher_id == auth()->user()->id)
                                                 @if ($session->is_skipped == true)

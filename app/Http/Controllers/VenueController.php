@@ -70,7 +70,7 @@ class VenueController extends Controller
         $new_venue->name = $request->venue_data;
         $new_venue->save();
 
-        $users = User::whereIn('role', [0, 1, 2])->get();
+        $users = User::whereIn('role', [0, 1])->get();
         foreach ($users as $user) {
             Mail::to($user->email)->send(new VenueMail($new_venue, 'new'));
         }
@@ -128,7 +128,7 @@ class VenueController extends Controller
         $venue->update([
             'name' => $request->venue_data,
         ]);
-        // $users = User::whereIn('role', [1, 2, 0])->get();
+        // $users = User::whereIn('role', [1, 0])->get();
         // foreach ($users as $user) {
         //     Mail::to($user->email)->send(new VenueMail($venue, 'update'));
         // }

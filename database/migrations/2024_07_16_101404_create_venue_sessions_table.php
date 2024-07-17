@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('venue_sessions', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('venue_id');
-            $table->unsignedBigInteger('teacher_id');
-            $table->string('subject');
+            $table->unsignedBigInteger('teacher_id')->nullable();
+            $table->string('subject')->nullable();
             $table->string('day_of_week');
             $table->time('start_time');
             $table->time('end_time');

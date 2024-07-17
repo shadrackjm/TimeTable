@@ -16,7 +16,7 @@ class SessionSeeder extends Seeder
     {
         VenueSession::create([
             'venue_id' => 1,
-            'teacher_id' => 1,
+            'teacher_id' => 2,
             'subject' => 'Biology',
             'day_of_week' => 'Monday',
             'start_time' => Carbon::createFromTime(7, 0, 0),
@@ -28,6 +28,51 @@ class SessionSeeder extends Seeder
             'teacher_id' => 2,
             'subject' => 'Math',
             'day_of_week' => 'Tuesday',
+            'start_time' => Carbon::createFromTime(9, 0, 0),
+            'end_time' => Carbon::createFromTime(10, 0, 0),
+        ]);
+
+        VenueSession::create([
+            'venue_id' => 3,
+            'teacher_id' => 3,
+            'subject' => 'Math',
+            'day_of_week' => 'Tuesday',
+            'start_time' => Carbon::createFromTime(9, 0, 0),
+            'end_time' => Carbon::createFromTime(10, 0, 0),
+        ]);
+
+        VenueSession::create([
+            'venue_id' => 4,
+            'teacher_id' => 3,
+            'subject' => 'Math',
+            'day_of_week' => 'Tuesday',
+            'start_time' => Carbon::createFromTime(9, 0, 0),
+            'end_time' => Carbon::createFromTime(10, 0, 0),
+        ]);
+
+        VenueSession::create([
+            'venue_id' => 5,
+            'teacher_id' => 2,
+            'subject' => 'Math',
+            'day_of_week' => 'Tuesday',
+            'start_time' => Carbon::createFromTime(9, 0, 0),
+            'end_time' => Carbon::createFromTime(10, 0, 0),
+        ]);
+
+        VenueSession::create([
+            'venue_id' => 6,
+            'teacher_id' => 2,
+            'subject' => 'Math',
+            'day_of_week' => 'Wednesday',
+            'start_time' => Carbon::createFromTime(9, 0, 0),
+            'end_time' => Carbon::createFromTime(10, 0, 0),
+        ]);
+
+        VenueSession::create([
+            'venue_id' => 6,
+            'teacher_id' => 6,
+            'subject' => 'Math',
+            'day_of_week' => 'Wednesday',
             'start_time' => Carbon::createFromTime(9, 0, 0),
             'end_time' => Carbon::createFromTime(10, 0, 0),
         ]);
