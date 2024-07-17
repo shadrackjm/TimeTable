@@ -18,6 +18,7 @@ class VenueSessionsImport implements ToModel, WithHeadingRow
             'start_time' => Carbon::parse($row['start_time'])->format('H:i:s'),
             'end_time' => Carbon::parse($row['end_time'])->format('H:i:s'),
             'venue_id' => $row['venue_id'],
+            'is_skipped' => $row['is_skipped'],
         ]);
     }
 }

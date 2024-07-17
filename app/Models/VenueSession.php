@@ -16,6 +16,7 @@ class VenueSession extends Model
         'start_time',
         'end_time',
         'is_skipped',
+        'is_booked',
     ];
 
     public function venue()

@@ -56,17 +56,17 @@ class TeacherController extends Controller
 
     public function bookSession($id)
     {
-        $session = VenueSession::findOrFail($id);
-
+        $session = VenueSession::with('venue','teacher')->findOrFail($id);
+        // dd($session);
         if ($session->teacher_id == auth()->id()) {
             return redirect()->back()->with('error', 'You cannot book your own session.');
         }
 
-        $session->is_skipped = false;
-        $session->is_booked = true;
-        $session->save();
-
         try {
+            $session->is_skipped = false;
+            $session->is_booked = true;
+            $session->save();
+
             $users = User::whereIn('role', [0, 1])->get();
             foreach ($users as $user) {
                 Mail::to($user->email)->send(new VenueMail($session, 'booked'));
